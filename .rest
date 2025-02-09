@@ -1,0 +1,21 @@
+### Get all APIs
+GET http://localhost:8080/apis
+
+### Get a specific API by ID
+GET http://localhost:8080/apis/67a6c4f74ba886ba6d7899c6
+
+### Adds new API
+POST http://localhost:8080/apis
+Content-Type: application/json
+
+{
+    "name": "The OpenDota API",
+    "description": "Provides Dota 2 related data including advanced match data extracted from match replays.",
+    "category": "Gaming",
+    "base_url": "https://https://docs.opendota.com/",
+    "auth_required": true,
+    "added_by": "605c72ef1532073fc8f7c8c4"  
+}
+
+### Delete API by ID
+DELETE http://localhost:8080/apis/67a6e966322fe84f746bd2d6

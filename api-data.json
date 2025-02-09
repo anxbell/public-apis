@@ -1,0 +1,20 @@
+[
+    {
+        "name": "OpenWeather API",
+        "description": "Provides weather data, including current weather, forecasts, nowcasts, and historical weather data.",
+        "category": "Weather",
+        "base_url": "https://api.openweathermap.org/data/2.5",
+        "auth_required": true,
+        "added_by": "605c72ef1532073fc8f7c8c4", 
+        "created_at": "2025-02-01T10:00:00.000Z"
+    },
+    {
+        "name": "GitHub API",
+        "description": "Allows developers to access data from GitHub, including repositories, user data, and more.",
+        "category": "Development",
+        "base_url": "https://api.github.com",
+        "auth_required": false,
+        "added_by": "605c72ef1532073fc8f7c8c5", 
+        "created_at": "2025-02-02T12:30:00.000Z"
+    }
+]

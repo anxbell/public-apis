@@ -1,0 +1,63 @@
+{
+  "swagger": "2.0",
+  "info": {
+    "version": "1.0.0",
+    "title": "API Documentation",
+    "description": "Documentation for managing APIs"
+  },
+  "host": "localhost:3000",
+  "basePath": "/",
+  "schemes": [
+    "http"
+  ],
+  "paths": {
+    "/apis": {
+      "get": {
+        "description": "Get all APIs",
+        "responses": {
+          "200": {
+            "description": "Successfully fetched APIs"
+          }
+        }
+      },
+      "post": {
+        "description": "Add a new API",
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "type": "object",
+                "properties": {
+                  "name": {
+                    "type": "string"
+                  },
+                  "description": {
+                    "type": "string"
+                  },
+                  "category": {
+                    "type": "string"
+                  },
+                  "base_url": {
+                    "type": "string"
+                  },
+                  "auth_required": {
+                    "type": "boolean"
+                  }
+                }
+              }
+            }
+          }
+        },
+        "responses": {
+          "201": {
+            "description": "Successfully created new API"
+          },
+          "400": {
+            "description": "Invalid input"
+          }
+        }
+      }
+    }
+  }
+}
