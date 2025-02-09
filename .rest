@@ -19,3 +19,6 @@ Content-Type: application/json
 
 ### Delete API by ID
 DELETE http://localhost:8080/apis/67a6e966322fe84f746bd2d6
+
+### Get all APIs
+https://publicapis.onrender.com/apis
