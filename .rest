@@ -18,7 +18,23 @@ Content-Type: application/json
 }
 
 ### Delete API by ID
-DELETE http://localhost:8080/apis/67a6e966322fe84f746bd2d6
+DELETE http://localhost:8080/apis/67a844164c534c004c25158b
 
 ### Get all APIs
 https://publicapis.onrender.com/apis
+
+### Adds new API
+POST http://publicapis.onrender.com/apis
+Content-Type: application/json
+
+{
+    "name": "The OpenDota API",
+    "description": "Provides Dota 2 related data including advanced match data extracted from match replays.",
+    "category": "Gaming",
+    "base_url": "https://https://docs.opendota.com/",
+    "auth_required": true,
+    "added_by": "605c72ef1532073fc8f7c8c4"  
+}
+
+### Delete API by ID
+DELETE http://publicapis.onrender.com/apis/67a8444387534002ce9890ff

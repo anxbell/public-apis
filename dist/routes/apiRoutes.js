@@ -70,13 +70,17 @@ router.get("/:id", async (req, res) => {
     }
 });
 // DELETE an API by ID
-// router.delete("/:id", async (req: Request, res: Response) => {
-//     try {
-//         const api = await Api.findByIdAndDelete(req.params.id);
-//         if (!api) return res.status(404).json({ message: 'API not found' });
-//         res.json({ message: "API deleted successfully" });
-//     } catch (err) {
-//         res.status(500).json({ message: (err as Error).message });
-//     }
-// });
+router.delete("/:id", async (req, res) => {
+    console.log("DELETE route hit for ID:", req.params.id); // Debugging line
+    try {
+        const deletedApi = await api_1.Api.findByIdAndDelete(req.params.id);
+        if (!deletedApi) {
+            return res.status(404).json({ message: 'API not found' });
+        }
+        res.json({ message: "API deleted successfully" });
+    }
+    catch (err) {
+        res.status(500).json({ message: err.message });
+    }
+});
 exports.default = router;

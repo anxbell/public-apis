@@ -37,3 +37,7 @@ async function connectDB() {
 connectDB();
 //start server
 app.listen(PORT, () => console.log(`Server running on port ${PORT}`));
+app.use((0, cors_1.default)({
+    origin: 'http://localhost:8080',
+    methods: ['GET', 'POST', 'PUT', 'DELETE'],
+}));
