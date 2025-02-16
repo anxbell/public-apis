@@ -38,10 +38,10 @@ DELETE http://localhost:8080/apis/67b15f832f54fe629e4eecf7
 https://publicapis.onrender.com/apis
 
 ### Get a specific API by ID
-GET http://publicapis.onrender/apis/67b15cc00a2f5cd79e73351a
+GET https://publicapis.onrender.com/apis/67b15cc00a2f5cd79e73351a
 
 ### Adds new API
-POST http://publicapis.onrender/apis
+POST https://publicapis.onrender.com/apis
 Content-Type: application/json
 
 {
@@ -53,7 +53,7 @@ Content-Type: application/json
     "added_by": "605c72ef1532073fc8f7c8c4"  
 }
 ### Updates API
-PUT http://publicapis.onrender/apis/67b15d4f0a2f5cd79e73352a
+PUT https://publicapis.onrender.com/apis/67b16530f4328a92ab822635
 Content-Type: application/json
 
 {
@@ -66,5 +66,5 @@ Content-Type: application/json
 }
 
 ### Delete API by ID
-DELETE http://publicapis.onrender/apis/67b15d4f0a2f5cd79e73352a
+DELETE https://publicapis.onrender.com/apis/67b16530f4328a92ab822635
 
