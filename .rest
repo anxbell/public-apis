@@ -30,7 +30,7 @@ Content-Type: application/json
 }
 
 ### Delete API by ID
-DELETE http://localhost:8080/apis/67b15d4f0a2f5cd79e73352a
+DELETE http://localhost:8080/apis/67b15f832f54fe629e4eecf7
 
 
 
