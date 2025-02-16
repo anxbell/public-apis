@@ -16,7 +16,7 @@ app.use(express.json());
 
 // Configure CORS to allow multiple origins
 app.use(cors({
-  origin: ['http://localhost:8080', 'https://publicapis.onrender.com'],
+  origin: ['http://localhost:8080', 'https://publicapis.onrender.com', 'https://publicapis.onrender.com/api-docs'],
   methods: ['GET', 'POST', 'PUT', 'DELETE'],
 }));
 
