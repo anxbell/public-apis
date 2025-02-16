@@ -53,7 +53,7 @@ Content-Type: application/json
     "added_by": "605c72ef1532073fc8f7c8c4"  
 }
 ### Updates API
-PUT https://publicapis.onrender.com/apis/67b16530f4328a92ab822635
+PUT https://publicapis.onrender.com/apis/67b1716ee883e46e13913f24
 Content-Type: application/json
 
 {
@@ -66,5 +66,5 @@ Content-Type: application/json
 }
 
 ### Delete API by ID
-DELETE https://publicapis.onrender.com/apis/67b16530f4328a92ab822635
+DELETE https://publicapis.onrender.com/apis/67b1716ee883e46e13913f2d
 
