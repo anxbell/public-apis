@@ -5,7 +5,7 @@
     "title": "API Management",
     "description": "A comprehensive API for managing and interacting with a collection of public APIs. Allows users to view, add, update, and delete APIs, as well as retrieve detailed information on each API's functionality and usage."
   },
-  "host": "publicapis.onrender.com",
+  "host": "localhost:8080",
   "basePath": "/",
   "schemes": [
     "http"
