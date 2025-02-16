@@ -2,7 +2,7 @@ import express from "express";
 import dotenv from "dotenv";
 import mongoose from "mongoose";
 import cors from "cors";
-import { Request, Response } from "express";
+import { Request, Response, NextFunction } from "express";
 import apiRoutes from "./routes/apiRoutes";
 import swaggerUi from "swagger-ui-express";
 import swaggerDocument from "../swagger.json";
@@ -12,7 +12,13 @@ dotenv.config();
 const app = express();
 
 app.use(express.json());
-app.use(cors());
+
+
+// Configure CORS to allow multiple origins
+app.use(cors({
+  origin: ['http://localhost:8080', 'https://publicapis.onrender.com'],
+  methods: ['GET', 'POST', 'PUT', 'DELETE'],
+}));
 
 
 //apis route
@@ -26,6 +32,20 @@ const PORT = process.env.PORT || 8080;
 // Basic route
 app.get("/", (req: Request, res: Response) => {
   res.send("API success");
+});
+
+
+// Global Error Handling Middleware (after routes)
+app.use((err: any, req: Request, res: Response, next: NextFunction): void=> {
+  console.error(err); // Log the error for debugging purposes
+
+  if (err instanceof SyntaxError) {
+      // Catch invalid JSON parsing errors
+      res.status(400).json({ message: "Invalid JSON format", error: err.message });
+  }
+
+  // Handle other types of errors (e.g., validation errors)
+  res.status(500).json({ message: "Internal Server Error", error: err.message });
 });
 
 // Connect to MongoDB
@@ -42,8 +62,3 @@ connectDB();
 //start server
 app.listen(PORT, () => console.log(`Server running on port ${PORT}`));
 
-
-app.use(cors({
-  origin: 'http://localhost:8080', 
-  methods: ['GET', 'POST', 'PUT', 'DELETE'],
-}));

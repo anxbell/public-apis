@@ -3,6 +3,7 @@ import { Api } from "../models/api"; // Adjust path if necessary
 import mongoose from 'mongoose';
 const router = express.Router();
 
+//GET all API
 /**
  * @swagger
  * /apis:
@@ -17,6 +18,40 @@ router.get("/", async (req: Request, res: Response) => {
     res.json(apis);
 });
 
+//GET a single API
+/**
+ * @swagger
+ * /apis/{id}:
+ *   get:
+ *     description: Get a single API by ID
+ *     parameters:
+ *       - name: id
+ *         in: path
+ *         description: ID of the API to fetch
+ *         required: true
+ *         schema:
+ *           type: string
+ *     responses:
+ *       200:
+ *         description: Successfully fetched API
+ *       404:
+ *         description: API not found
+ *       500:
+ *         description: Internal server error
+ */
+router.get("/:id", async (req: Request, res: Response): Promise<any> => {
+    try {
+        const api = await Api.findById(req.params.id);
+        if (!api) {
+            return res.status(404).json({ message: 'API not found' });
+        }
+        return res.json(api);
+    } catch (err) {
+        return res.status(500).json({ message: (err as Error).message });
+    }
+});
+
+///POST - Create a new API
 /**
  * @swagger
  * /apis:
@@ -55,26 +90,108 @@ router.post("/", async (req: Request, res: Response) => {
     }
 });
 
+// PUT - Update a contact
+//updating a contact that returns a 204 status
 
-router.get("/:id", async (req: Request, res: Response): Promise<any> => {
+/**
+ * @swagger
+ * /apis/{id}:
+ *   put:
+ *     description: Update an API by ID
+ *     parameters:
+ *       - name: id
+ *         in: path
+ *         description: ID of the API to update
+ *         required: true
+ *         schema:
+ *           type: string
+ *     requestBody:
+ *       required: true
+ *       content:
+ *         application/json:
+ *           schema:
+ *             type: object
+ *             properties:
+ *               name:
+ *                 type: string
+ *               description:
+ *                 type: string
+ *               category:
+ *                 type: string
+ *               base_url:
+ *                 type: string
+ *               auth_required:
+ *                 type: boolean
+ *     responses:
+ *       200:
+ *         description: Successfully updated API
+ *       404:
+ *         description: API not found
+ *       500:
+ *         description: Failed to update API
+ */
+router.put("/:id", async (req: Request, res: Response): Promise<any> => {
     try {
-        const api = await Api.findById(req.params.id);
-        if (!api) {
-            return res.status(404).json({ message: 'API not found' });
+        // Check if the ID exists first
+        const apiExists = await Api.findById(req.params.id);
+        if (!apiExists) {
+            return res.status(404).json({ message: "API not found" });
         }
-        return res.json(api);
+
+        // Update API with validation
+        const api = await Api.findByIdAndUpdate(
+            req.params.id,
+            req.body,
+            {
+                new: true,
+                runValidators: true,  // Ensure validation is run on update
+            }
+        );
+
+        // If no document is found
+        if (!api) {
+            return res.status(500).json({ message: "Failed to update API" });
+        }
+
+        res.status(200).json(api);
     } catch (err) {
+        // Handle validation errors
+        if ((err as Error).name === 'ValidationError') {
+            return res.status(400).json({
+                message: "Validation Error",
+                errors: (err as Error)
+            });
+        }
+
         return res.status(500).json({ message: (err as Error).message });
     }
 });
 
 
 
-
 // DELETE an API by ID
-
+/**
+ * @swagger
+ * /apis/{id}:
+ *   delete:
+ *     description: Delete an API by ID
+ *     parameters:
+ *       - name: id
+ *         in: path
+ *         description: ID of the API to delete
+ *         required: true
+ *         schema:
+ *           type: string
+ *     responses:
+ *       200:
+ *         description: Successfully deleted API
+ *       404:
+ *         description: API not found
+ *       500:
+ *         description: Failed to delete API
+ */
 router.delete("/:id", async (req: Request, res: Response): Promise<any> => {
-    console.log("DELETE route hit for ID:", req.params.id); // Debugging line
+
     try {
         const deletedApi = await Api.findByIdAndDelete(req.params.id);
         if (!deletedApi) {
@@ -90,3 +207,5 @@ router.delete("/:id", async (req: Request, res: Response): Promise<any> => {
 
 
 export default router;
+
+

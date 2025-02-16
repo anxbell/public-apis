@@ -2,8 +2,8 @@
   "swagger": "2.0",
   "info": {
     "version": "1.0.0",
-    "title": "API Documentation",
-    "description": "Documentation for managing APIs"
+    "title": "API Management",
+    "description": "A comprehensive API for managing and interacting with a collection of public APIs. Allows users to view, add, update, and delete APIs, as well as retrieve detailed information on each API's functionality and usage."
   },
   "host": "localhost:8080",
   "basePath": "/",
@@ -22,33 +22,33 @@
       },
       "post": {
         "description": "Add a new API",
-        "requestBody": {
-          "required": true,
-          "content": {
-            "application/json": {
-              "schema": {
-                "type": "object",
-                "properties": {
-                  "name": {
-                    "type": "string"
-                  },
-                  "description": {
-                    "type": "string"
-                  },
-                  "category": {
-                    "type": "string"
-                  },
-                  "base_url": {
-                    "type": "string"
-                  },
-                  "auth_required": {
-                    "type": "boolean"
-                  }
+        "parameters": [
+          {
+            "name": "body",
+            "in": "body",
+            "required": true,
+            "schema": {
+              "type": "object",
+              "properties": {
+                "name": {
+                  "type": "string"
+                },
+                "description": {
+                  "type": "string"
+                },
+                "category": {
+                  "type": "string"
+                },
+                "base_url": {
+                  "type": "string"
+                },
+                "auth_required": {
+                  "type": "boolean"
                 }
               }
             }
           }
-        },
+        ],
         "responses": {
           "201": {
             "description": "Successfully created new API"
@@ -61,14 +61,14 @@
     },
     "/apis/{id}": {
       "get": {
-        "description": "Get API by ID",
+        "description": "Get a single API by ID",
         "parameters": [
           {
             "name": "id",
             "in": "path",
+            "description": "ID of the API to fetch",
             "required": true,
-            "type": "string",
-            "description": "ID of the API"
+            "type": "string"
           }
         ],
         "responses": {
@@ -79,7 +79,7 @@
             "description": "API not found"
           },
           "500": {
-            "description": "Server error"
+            "description": "Internal server error"
           }
         }
       },
@@ -89,47 +89,45 @@
           {
             "name": "id",
             "in": "path",
+            "description": "ID of the API to update",
             "required": true,
-            "type": "string",
-            "description": "ID of the API"
-          }
-        ],
-        "requestBody": {
-          "required": true,
-          "content": {
-            "application/json": {
-              "schema": {
-                "type": "object",
-                "properties": {
-                  "name": {
-                    "type": "string"
-                  },
-                  "description": {
-                    "type": "string"
-                  },
-                  "category": {
-                    "type": "string"
-                  },
-                  "base_url": {
-                    "type": "string"
-                  },
-                  "auth_required": {
-                    "type": "boolean"
-                  }
+            "type": "string"
+          },
+          {
+            "name": "body",
+            "in": "body",
+            "required": true,
+            "schema": {
+              "type": "object",
+              "properties": {
+                "name": {
+                  "type": "string"
+                },
+                "description": {
+                  "type": "string"
+                },
+                "category": {
+                  "type": "string"
+                },
+                "base_url": {
+                  "type": "string"
+                },
+                "auth_required": {
+                  "type": "boolean"
                 }
               }
             }
           }
-        },
+        ],
         "responses": {
           "200": {
             "description": "Successfully updated API"
           },
-          "400": {
-            "description": "Invalid input"
-          },
           "404": {
             "description": "API not found"
+          },
+          "500": {
+            "description": "Failed to update API"
           }
         }
       },
@@ -139,9 +137,9 @@
           {
             "name": "id",
             "in": "path",
+            "description": "ID of the API to delete",
             "required": true,
-            "type": "string",
-            "description": "ID of the API"
+            "type": "string"
           }
         ],
         "responses": {
@@ -152,7 +150,7 @@
             "description": "API not found"
           },
           "500": {
-            "description": "Server error"
+            "description": "Failed to delete API"
           }
         }
       }

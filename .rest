@@ -2,7 +2,7 @@
 GET http://localhost:8080/apis
 
 ### Get a specific API by ID
-GET http://localhost:8080/apis/67a6c4f74ba886ba6d7899c6
+GET http://localhost:8080/apis/67b15cc00a2f5cd79e73351a
 
 ### Adds new API
 POST http://localhost:8080/apis
@@ -16,15 +16,32 @@ Content-Type: application/json
     "auth_required": true,
     "added_by": "605c72ef1532073fc8f7c8c4"  
 }
+### Updates API
+PUT http://localhost:8080/apis/67b15f832f54fe629e4eecf7
+Content-Type: application/json
+
+{
+    "name": "NOT THAT API",
+    "description": "Provides Dota 2 related data including advanced match data extracted from match replays.",
+    "category": "Technology",
+    "base_url": "https://docs.opendota.com/",
+    "auth_required": true,
+    "added_by": "605c72ef1532073fc8f7c8c4" 
+}
 
 ### Delete API by ID
-DELETE http://localhost:8080/apis/67a844164c534c004c25158b
+DELETE http://localhost:8080/apis/67b15d4f0a2f5cd79e73352a
 
-### Get all APIs
+
+
+### Get all APIs RENDER
 https://publicapis.onrender.com/apis
 
+### Get a specific API by ID
+GET http://publicapis.onrender/apis/67b15cc00a2f5cd79e73351a
+
 ### Adds new API
-POST http://publicapis.onrender.com/apis
+POST http://publicapis.onrender/apis
 Content-Type: application/json
 
 {
@@ -35,6 +52,19 @@ Content-Type: application/json
     "auth_required": true,
     "added_by": "605c72ef1532073fc8f7c8c4"  
 }
+### Updates API
+PUT http://publicapis.onrender/apis/67b15d4f0a2f5cd79e73352a
+Content-Type: application/json
+
+{
+    "name": "NOT THAT API",
+    "description": "Provides Dota 2 related data including advanced match data extracted from match replays.",
+    "category": "Technology",
+    "base_url": "https://docs.opendota.com/",
+    "auth_required": true,
+    "added_by": "605c72ef1532073fc8f7c8c4" 
+}
 
 ### Delete API by ID
-DELETE http://publicapis.onrender.com/apis/67a8444387534002ce9890ff
+DELETE http://publicapis.onrender/apis/67b15d4f0a2f5cd79e73352a
+
