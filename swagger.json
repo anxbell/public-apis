@@ -8,7 +8,7 @@
   "host": "publicapis.onrender.com",
   "basePath": "/",
   "schemes": [
-    "http", "https"
+    "https"
   ],
   "paths": {
     "/apis": {
