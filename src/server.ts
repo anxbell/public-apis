@@ -8,18 +8,20 @@ import swaggerUi from "swagger-ui-express";
 import swaggerDocument from "../swagger.json";
 //npx ts-node src/server.ts
 
+dotenv.config();
+
 const app = express();
 app.use(cors());
 app.use(express.json());
-dotenv.config();
 
+const RENDER_URL = process.env.RENDER_URL || 'http://localhost:8080';
 
 // Configure CORS to allow multiple origins
 app.use(cors({
-  origin: ['http://localhost:8080', 'https://publicapis.onrender.com', 'https://publicapis.onrender.com/api-docs', 'https://publicapis.onrender.com/api-docs'],
+  origin: [RENDER_URL, 'http://localhost:8080'],
   methods: ['GET', 'POST', 'PUT', 'DELETE'],  // Add OPTIONS method to handle preflight requests
   allowedHeaders: ['Content-Type', 'Authorization'],    // Allow specific headers if needed
-  credentials: true,  // If you're sending credentials like cookies or auth headers, you might need this
+  credentials: true,  // If sending credentials like cookies or auth headers,this might be needed
 }));
 
 
