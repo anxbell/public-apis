@@ -7,9 +7,8 @@ exports.User = void 0;
 const mongoose_1 = __importDefault(require("mongoose"));
 //user schema for mongodb
 const userSchema = new mongoose_1.default.Schema({
-    username: { type: String, unique: true, required: true },
-    email: { type: String, unique: true, required: true },
-    password: { type: String, required: true },
+    googleId: { type: String, unique: true, required: true }, // Store the Google ID (changed username to googleid)
+    email: { type: String, unique: true, required: true }, //removed password
 });
 //further use schema
 exports.User = mongoose_1.default.model("User", userSchema);

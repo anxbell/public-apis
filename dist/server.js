@@ -10,23 +10,47 @@ const cors_1 = __importDefault(require("cors"));
 const apiRoutes_1 = __importDefault(require("./routes/apiRoutes"));
 const swagger_ui_express_1 = __importDefault(require("swagger-ui-express"));
 const swagger_json_1 = __importDefault(require("../swagger.json"));
+const express_session_1 = __importDefault(require("express-session"));
+const passport_1 = __importDefault(require("passport"));
+require("./config/auth"); //oauth config
 //npx ts-node src/server.ts
+dotenv_1.default.config();
 const app = (0, express_1.default)();
 app.use((0, cors_1.default)());
 app.use(express_1.default.json());
-dotenv_1.default.config();
-// Configure CORS to allow multiple origins
+// Session config
+app.use((0, express_session_1.default)({
+    secret: process.env.SESSION_SECRET || "secret",
+    resave: false,
+    saveUninitialized: true,
+}));
+// Initialize Google Passport
+app.use(passport_1.default.initialize());
+app.use(passport_1.default.session());
+//CORS settings
+const RENDER_URL = process.env.RENDER_URL || 'http://localhost:8080';
 app.use((0, cors_1.default)({
-    origin: ['http://localhost:8080', 'https://publicapis.onrender.com', 'https://publicapis.onrender.com/api-docs', 'https://publicapis.onrender.com/api-docs'],
+    origin: [RENDER_URL, 'http://localhost:8080'],
     methods: ['GET', 'POST', 'PUT', 'DELETE'], // Add OPTIONS method to handle preflight requests
     allowedHeaders: ['Content-Type', 'Authorization'], // Allow specific headers if needed
-    credentials: true, // If you're sending credentials like cookies or auth headers, you might need this
+    credentials: true, // If sending credentials like cookies or auth headers,this might be needed
 }));
-//apis route
+//----- ROUTES ------
+//APIs route
 app.use("/apis", apiRoutes_1.default);
 //swagger
 app.use("/api-docs", (0, cors_1.default)(), swagger_ui_express_1.default.serve, swagger_ui_express_1.default.setup(swagger_json_1.default));
-const PORT = process.env.PORT || 8080;
+// Google Auth routes
+app.get("/auth/google", passport_1.default.authenticate("google", { scope: ["profile", "email"] }));
+// Logout
+app.get("/logout", (req, res) => {
+    req.logout((err) => {
+        if (err) {
+            console.error(err); // Log errors
+        }
+        res.redirect("/"); // Redirect after logout
+    });
+});
 // Basic route
 app.get("/", (req, res) => {
     res.send("API success");
@@ -53,4 +77,5 @@ async function connectDB() {
 }
 connectDB();
 //start server
+const PORT = process.env.PORT || 8080;
 app.listen(PORT, () => console.log(`Server running on port ${PORT}`));
