@@ -51,16 +51,39 @@ app.get("/auth/google",
   passport.authenticate("google", { scope: ["profile", "email"] })
 );
 
+// Google Auth callback route
+app.get("/auth/google/callback", 
+  passport.authenticate("google", { failureRedirect: "/login" }), 
+  (req, res) => {
+    res.redirect("/profile");
+  }
+);
+
+// Profile route (authenticated users only)
+app.get("/profile", (req: Request, res: Response) => {
+  if (!req.isAuthenticated()) {
+    return res.redirect("/login");
+  }
+  res.json(req.user); // Send user info to the client
+});
+
+//login route
+
 // Logout
 app.get("/logout", (req, res) => {
   req.logout((err) => {
     if (err) {
       console.error(err); // Log errors
     }
-    res.redirect("/"); // Redirect after logout
+    res.send("Logged out"); // Redirect after logout
   });
 });
 
+
+//If you’re not logged 
+app.get("/login", (req: Request, res: Response) => {
+  res.send("Please log in using Google.");
+});
 
 
 
@@ -98,3 +121,6 @@ connectDB();
 const PORT = process.env.PORT || 8080;
 app.listen(PORT, () => console.log(`Server running on port ${PORT}`));
 
+//test oauth flow
+
+//http://localhost:8080/auth/google

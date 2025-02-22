@@ -42,6 +42,17 @@ app.use("/apis", apiRoutes_1.default);
 app.use("/api-docs", (0, cors_1.default)(), swagger_ui_express_1.default.serve, swagger_ui_express_1.default.setup(swagger_json_1.default));
 // Google Auth routes
 app.get("/auth/google", passport_1.default.authenticate("google", { scope: ["profile", "email"] }));
+// Google Auth callback route
+app.get("/auth/google/callback", passport_1.default.authenticate("google", { failureRedirect: "/login" }), (req, res) => {
+    res.redirect("/profile");
+});
+// Profile route (authenticated users only)
+app.get("/profile", (req, res) => {
+    if (!req.isAuthenticated()) {
+        return res.redirect("/login");
+    }
+    res.json(req.user); // Send user info to the client
+});
 // Logout
 app.get("/logout", (req, res) => {
     req.logout((err) => {
