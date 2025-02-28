@@ -1,0 +1,29 @@
+### Get all Users
+GET http://localhost:8080/users
+### Get User by Id
+GET http://localhost:8080/users/67c245c0b23bf1361b45fa0b
+
+### Create a new user (POST request)
+POST http://localhost:8080/users
+Content-Type: application/json
+
+{
+    "googleId": "1234567890",
+    "email": "sadie@gmail.com",
+    "googleName": "Sadie",
+    "googleLastName": "Skywalker"
+}
+
+### PUT update an user
+PUT http://localhost:8080/users/67c245c0b23bf1361b45fa0b
+Content-Type: application/json
+
+{
+    "googleId": "1234567890",
+    "email": "sadie@gmail.com",
+    "googleName": "NOT Sadie",
+    "googleLastName": "Skywalker"
+}
+
+### DELETE a user by id
+DELETE http://localhost:8080/users/67c245c0b23bf1361b45fa0b

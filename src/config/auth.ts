@@ -23,13 +23,25 @@ passport.use(
 
         if (!user) {
           const email = profile.emails && profile.emails[0] ? profile.emails[0].value : undefined;
+          const googleName = profile.name?.givenName || 'Unknown'; // added first name
+          const googleLastName = profile.name?.familyName || 'Unknown'; //added lastn
 
           user = new User({
             googleId: profile.id,
             email: email,
+            googleName: googleName,
+            googleLastName: googleLastName,
           });
 
           await user.save();
+        } else {
+          // If user exists, check if the fields are missing and update them
+          if (!user.googleName || !user.googleLastName) {
+            user.googleName = profile.name?.givenName || 'Unknown';
+            user.googleLastName = profile.name?.familyName || 'Unknown';
+
+            await user.save(); // Save the updated user
+          }
         }
 
         done(null, user);

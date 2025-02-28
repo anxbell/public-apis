@@ -1,9 +1,9 @@
 import express, { Request, Response } from "express";
-import { Api } from "../models/api"; // Adjust path if necessary
-import mongoose from 'mongoose';
+import { getAllApis, getApiById, createNewApi, updateApiById, deleteApiById } from "../controllers/apiController"; // Adjust path if necessary
+
 const router = express.Router();
 
-//GET all API
+// GET all APIs
 /**
  * @swagger
  * /apis:
@@ -13,12 +13,9 @@ const router = express.Router();
  *       200:
  *         description: Successfully fetched APIs
  */
-router.get("/", async (req: Request, res: Response) => {
-    const apis = await Api.find();
-    res.json(apis);
-});
+router.get("/", getAllApis);
 
-//GET a single API
+// GET a single API
 /**
  * @swagger
  * /apis/{id}:
@@ -39,19 +36,9 @@ router.get("/", async (req: Request, res: Response) => {
  *       500:
  *         description: Internal server error
  */
-router.get("/:id", async (req: Request, res: Response): Promise<any> => {
-    try {
-        const api = await Api.findById(req.params.id);
-        if (!api) {
-            return res.status(404).json({ message: 'API not found' });
-        }
-        return res.json(api);
-    } catch (err) {
-        return res.status(500).json({ message: (err as Error).message });
-    }
-});
+router.get("/:id", getApiById);
 
-///POST - Create a new API
+// POST - Create a new API
 /**
  * @swagger
  * /apis:
@@ -80,19 +67,9 @@ router.get("/:id", async (req: Request, res: Response): Promise<any> => {
  *       400:
  *         description: Invalid input
  */
-router.post("/", async (req: Request, res: Response) => {
-    try {
-        const newApi = new Api(req.body);
-        await newApi.save();
-        res.status(201).json(newApi);
-    } catch (err) {
-        res.status(400).json({ error: (err as Error).message });
-    }
-});
+router.post("/", createNewApi);
 
-// PUT - Update a contact
-//updating a contact that returns a 204 status
-
+// PUT - Update an API
 /**
  * @swagger
  * /apis/{id}:
@@ -130,44 +107,7 @@ router.post("/", async (req: Request, res: Response) => {
  *       500:
  *         description: Failed to update API
  */
-router.put("/:id", async (req: Request, res: Response): Promise<any> => {
-    try {
-        // Check if the ID exists first
-        const apiExists = await Api.findById(req.params.id);
-        if (!apiExists) {
-            return res.status(404).json({ message: "API not found" });
-        }
-
-        // Update API with validation
-        const api = await Api.findByIdAndUpdate(
-            req.params.id,
-            req.body,
-            {
-                new: true,
-                runValidators: true,  // Ensure validation is run on update
-            }
-        );
-
-        // If no document is found
-        if (!api) {
-            return res.status(500).json({ message: "Failed to update API" });
-        }
-
-        res.status(200).json(api);
-    } catch (err) {
-        // Handle validation errors
-        if ((err as Error).name === 'ValidationError') {
-            return res.status(400).json({
-                message: "Validation Error",
-                errors: (err as Error)
-            });
-        }
-
-        return res.status(500).json({ message: (err as Error).message });
-    }
-});
-
-
+router.put("/:id", updateApiById);
 
 // DELETE an API by ID
 /**
@@ -190,22 +130,6 @@ router.put("/:id", async (req: Request, res: Response): Promise<any> => {
  *       500:
  *         description: Failed to delete API
  */
-router.delete("/:id", async (req: Request, res: Response): Promise<any> => {
-
-    try {
-        const deletedApi = await Api.findByIdAndDelete(req.params.id);
-        if (!deletedApi) {
-            return res.status(404).json({ message: 'API not found' });
-        }
-        res.json({ message: "API deleted successfully" });
-    } catch (err) {
-        res.status(500).json({ message: (err as Error).message });
-    }
-});
-
-
-
+router.delete("/:id", deleteApiById);
 
 export default router;
-
-

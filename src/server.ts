@@ -4,13 +4,14 @@ import mongoose from "mongoose";
 import cors from "cors";
 import { Request, Response, NextFunction } from "express";
 import apiRoutes from "./routes/apiRoutes";
+import userRoutes from "./routes/userRoutes";
 import swaggerUi from "swagger-ui-express";
 import swaggerDocument from "../swagger.json";
 import session from "express-session";
 import passport from "passport";
 import "./config/auth"; //oauth config
 //npx ts-node src/server.ts
-
+//npx nodemon src/server.ts
 dotenv.config();
 
 const app = express();
@@ -39,6 +40,11 @@ app.use(cors({
 }));
 
 //----- ROUTES ------
+
+//Users routes//
+
+//Get all users route
+app.use("/users", userRoutes);
 
 //APIs route
 app.use("/apis", apiRoutes);
@@ -94,16 +100,32 @@ app.get("/", (req: Request, res: Response) => {
 
 
 // Global Error Handling Middleware (after routes)
-app.use((err: any, req: Request, res: Response, next: NextFunction): void=> {
-  console.error(err); // Log the error for debugging purposes
+app.use((err: any, req: Request, res: Response, next: NextFunction): void => {
+    console.error(err); // Log the error for debugging
 
-  if (err instanceof SyntaxError) {
-      // Catch invalid JSON parsing errors
-      res.status(400).json({ message: "Invalid JSON format", error: err.message });
-  }
+    // Handle JSON parsing errors
+    if (err instanceof SyntaxError && "body" in err) {
+        res.status(400).json({ message: "Invalid JSON format", error: err.message });
+        return;
+    }
 
-  // Handle other types of errors (e.g., validation errors)
-  res.status(500).json({ message: "Internal Server Error", error: err.message });
+    // Handle Mongoose validation errors
+    if (err.name === "ValidationError") {
+        res.status(400).json({ message: "Validation Error", error: err.errors });
+        return;
+    }
+
+    // Handle Mongoose CastError (invalid ObjectId)
+    if (err.name === "CastError") {
+        res.status(400).json({ message: "Invalid ID format", error: err.message });
+        return;
+    }
+
+    // Default to 500 Internal Server Error
+    res.status(500).json({
+        message: "Internal Server Error",
+        error: err.message || "Something went wrong",
+    });
 });
 
 // Connect to MongoDB
