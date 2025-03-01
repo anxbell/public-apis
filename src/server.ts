@@ -39,15 +39,23 @@ app.use(cors({
   credentials: true,  // If sending credentials like cookies or auth headers,this might be needed
 }));
 
+// Middleware to check if the user is authenticated
+const isAuthenticated = (req: Request, res: Response, next: NextFunction): any  => {
+  if (!req.isAuthenticated()) {
+    return res.status(401).json({ message: "User not authenticated" });
+  }
+  next();  // Proceed to the next middleware/route handler
+};
+
 //----- ROUTES ------
 
 //Users routes//
 
 //Get all users route
-app.use("/users", userRoutes);
+app.use("/users", isAuthenticated, userRoutes);
 
 //APIs route
-app.use("/apis", apiRoutes);
+app.use("/apis", isAuthenticated, apiRoutes);
 
 //swagger
 app.use("/api-docs", cors(), swaggerUi.serve, swaggerUi.setup(swaggerDocument));
