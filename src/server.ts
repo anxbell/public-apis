@@ -33,10 +33,10 @@ app.use(passport.session());
 const RENDER_URL = process.env.RENDER_URL || 'http://localhost:8080';
 
 app.use(cors({
-  origin: [RENDER_URL, 'http://localhost:8080'],
-  methods: ['GET', 'POST', 'PUT', 'DELETE'],  // Add OPTIONS method to handle preflight requests
+  origin: [RENDER_URL, 'http://localhost:8080', 'https://publicapis.onrender.com/api-docs'],
+  methods: ['GET', 'POST', 'PUT', 'DELETE', 'OPTIONS'], 
   allowedHeaders: ['Content-Type', 'Authorization'],    // Allow specific headers if needed
-  credentials: true,  // If sending credentials like cookies or auth headers,this might be needed
+  credentials: true, 
 }));
 
 // Middleware to check if the user is authenticated

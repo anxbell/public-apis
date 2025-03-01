@@ -10,31 +10,30 @@
   "schemes": [
     "https"
   ],
-  "paths": {
-    "/auth/google": {
-      "tags": ["Authentication Routes"],
-      "get": {
-        "description": "Authenticate using Google",
-        "responses": {
-          "302": {
-            "description": "Redirects to Google authentication"
+    "paths": {
+      "/auth/google": {
+        "tags": ["Authentication Routes"],
+        "get": {
+          "summary": "Google OAuth Login",
+          "description": "Redirects users to Google's OAuth authentication page. Open this URL in a new tab instead of using 'Try it out'.",
+          "externalDocs": {
+            "description": "Click here to authenticate with Google",
+            "url": "https://publicapis.onrender.com/auth/google"
           },
-          "500": {
-            "description": "Internal server error"
+          "responses": {
+            "302": {
+              "description": "Redirects to Google authentication"
+            }
           }
         }
-      }
-    },
+      },
     "/auth/google/callback": {
       "tags": ["Authentication Routes"],
       "get": {
-        "description": "Google authentication callback",
+        "description": "Handles Google's authentication callback and redirects to the profile page.",
         "responses": {
           "302": {
             "description": "Redirects to profile after successful authentication"
-          },
-          "500": {
-            "description": "Internal server error"
           }
         }
       }
