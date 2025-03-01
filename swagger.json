@@ -5,12 +5,92 @@
     "title": "API Management",
     "description": "A comprehensive API for managing and interacting with a collection of public APIs. Allows users to view, add, update, and delete APIs, as well as retrieve detailed information on each API's functionality and usage."
   },
-  "host": "localhost:8080",
+  "host": "publicapis.onrender.com",
   "basePath": "/",
   "schemes": [
-    "http"
+    "https"
   ],
   "paths": {
+    "/auth/google": {
+      "tags": ["Authentication Routes"],
+      "get": {
+        "description": "Authenticate using Google",
+        "responses": {
+          "302": {
+            "description": "Redirects to Google authentication"
+          },
+          "500": {
+            "description": "Internal server error"
+          }
+        }
+      }
+    },
+    "/auth/google/callback": {
+      "tags": ["Authentication Routes"],
+      "get": {
+        "description": "Google authentication callback",
+        "responses": {
+          "302": {
+            "description": "Redirects to profile after successful authentication"
+          },
+          "500": {
+            "description": "Internal server error"
+          }
+        }
+      }
+    },
+    "/profile": {
+      "tags": ["User Routes"],
+      "get": {
+        "description": "Get user profile (authenticated only)",
+        "responses": {
+          "200": {
+            "description": "User profile details",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/User"
+                }
+              }
+            }
+          },
+          "401": {
+            "description": "User not authenticated"
+          },
+          "500": {
+            "description": "Internal server error"
+          }
+        }
+      }
+    },
+    "/login": {
+      "tags": ["Authentication Routes"],
+      "get": {
+        "description": "Login route for unauthenticated users",
+        "responses": {
+          "200": {
+            "description": "Message to log in using Google"
+          },
+          "500": {
+            "description": "Internal server error"
+          }
+        }
+      }
+    },
+    "/logout": {
+      "tags": ["Authentication Routes"],
+      "get": {
+        "description": "Logout route for authenticated users",
+        "responses": {
+          "200": {
+            "description": "Successfully logged out"
+          },
+          "500": {
+            "description": "Internal server error"
+          }
+        }
+      }
+    },
     "/apis": {
       "tags": ["API Routes"],
       "get": {
@@ -190,23 +270,41 @@
         }
       },
       "post": {
-        "description": "Create a new user",
-        "requestBody": {
-          "required": true,
-          "content": {
-            "application/json": {
-              "schema": {
-                "$ref": "#/components/schemas/User"
-              }
+        "description": "Add a new user",
+        "parameters": [
+          {
+            "name": "body",
+            "in": "body",
+            "required": true,
+            "schema": {
+              "type": "object",
+              "properties": {
+                "googleId": {
+                  "type": "string"
+                },
+                "email": {
+                  "type": "string"
+                },
+                "googleLastName": {
+                  "type": "string"
+                },
+                "googleName": {
+                  "type": "string"
+                }
+              },
+              "required": [
+                "googleId",
+                "email"
+              ]
             }
           }
-        },
+        ],
         "responses": {
           "201": {
-            "description": "User created successfully"
+            "description": "Successfully created new user"
           },
           "400": {
-            "description": "Missing required fields"
+            "description": "Invalid input or missing data"
           },
           "500": {
             "description": "Internal server error"
@@ -261,7 +359,25 @@
             "in": "body",
             "required": true,
             "schema": {
-              "$ref": "#/components/schemas/User"
+              "type": "object",
+              "properties": {
+                "googleId": {
+                  "type": "string"
+                },
+                "email": {
+                  "type": "string"
+                },
+                "googleLastName": {
+                  "type": "string"
+                },
+                "googleName": {
+                  "type": "string"
+                }
+              },
+              "required": [
+                "googleId",
+                "email"
+              ]
             }
           }
         ],
@@ -303,100 +419,6 @@
           }
         }
       }
-    },
-    "/auth/google": {
-      "tags": ["Authentication Routes"],
-      "get": {
-        "description": "Authenticate using Google",
-        "responses": {
-          "302": {
-            "description": "Redirects to Google authentication"
-          },
-          "500": {
-            "description": "Internal server error"
-          }
-        }
-      }
-    },
-    "/auth/google/callback": {
-      "tags": ["Authentication Routes"],
-      "get": {
-        "description": "Google authentication callback",
-        "responses": {
-          "302": {
-            "description": "Redirects to profile after successful authentication"
-          },
-          "500": {
-            "description": "Internal server error"
-          }
-        }
-      }
-    },
-    "/profile": {
-      "tags": ["User Routes"],
-      "get": {
-        "description": "Get user profile (authenticated only)",
-        "responses": {
-          "200": {
-            "description": "User profile details",
-            "content": {
-              "application/json": {
-                "schema": {
-                  "$ref": "#/components/schemas/User"
-                }
-              }
-            }
-          },
-          "401": {
-            "description": "User not authenticated"
-          },
-          "500": {
-            "description": "Internal server error"
-          }
-        }
-      }
-    },
-    "/login": {
-      "tags": ["Authentication Routes"],
-      "get": {
-        "description": "Login route for unauthenticated users",
-        "responses": {
-          "200": {
-            "description": "Message to log in using Google"
-          },
-          "500": {
-            "description": "Internal server error"
-          }
-        }
-      }
-    },
-    "/logout": {
-      "tags": ["Authentication Routes"],
-      "get": {
-        "description": "Logout route for authenticated users",
-        "responses": {
-          "200": {
-            "description": "Successfully logged out"
-          },
-          "500": {
-            "description": "Internal server error"
-          }
-        }
-      }
-    },
-    "/": {
-      "tags": ["General Routes"],
-      "get": {
-        "description": "Basic route for testing",
-        "responses": {
-          "200": {
-            "description": "API success message"
-          },
-          "500": {
-            "description": "Internal server error"
-          }
-        }
-      }
     }
   },
   "components": {
@@ -404,16 +426,16 @@
       "User": {
         "type": "object",
         "properties": {
-          "id": {
+          "googleId": {
             "type": "string"
           },
           "email": {
             "type": "string"
           },
-          "name": {
+          "googleName": {
             "type": "string"
           },
-          "profile_picture": {
+          "googleLastName": {
             "type": "string"
           }
         }

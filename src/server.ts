@@ -74,14 +74,12 @@ app.get("/auth/google/callback",
 );
 
 // Profile route (authenticated users only)
-app.get("/profile", (req: Request, res: Response) => {
+app.get("/profile", (req: Request, res: Response): any => {
   if (!req.isAuthenticated()) {
-    return res.redirect("/login");
+    return res.status(401).json({ message: "User not authenticated" });
   }
   res.json(req.user); // Send user info to the client
 });
-
-//login route
 
 // Logout
 app.get("/logout", (req, res) => {
@@ -93,12 +91,10 @@ app.get("/logout", (req, res) => {
   });
 });
 
-
 //If you’re not logged 
 app.get("/login", (req: Request, res: Response) => {
   res.send("Please log in using Google.");
 });
-
 
 
 // Basic route
