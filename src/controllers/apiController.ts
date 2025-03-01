@@ -27,8 +27,18 @@ export const getApiById = async (req: Request, res: Response): Promise<any> => {
 // POST - Create a new API
 export const createNewApi = async (req: Request, res: Response) => {
     try {
-        const newApi = new Api(req.body);
+        const user = req.user as { googleId: string; email: string };
+        const addedBy = user.email;
+
+        const newApi = new Api({
+            ...req.body,
+            added_by: addedBy, 
+        });
+
+        // Save the new API document
         await newApi.save();
+
+        // Respond with the created API
         res.status(201).json(newApi);
     } catch (err) {
         res.status(400).json({ error: (err as Error).message });
