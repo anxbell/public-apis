@@ -5,18 +5,22 @@
     "title": "API Management",
     "description": "A comprehensive API for managing and interacting with a collection of public APIs. Allows users to view, add, update, and delete APIs, as well as retrieve detailed information on each API's functionality and usage."
   },
-  "host": "publicapis.onrender.com",
+  "host": "localhost:8080",
   "basePath": "/",
   "schemes": [
-    "https"
+    "http"
   ],
   "paths": {
     "/apis": {
+      "tags": ["API Routes"],
       "get": {
         "description": "Get all APIs",
         "responses": {
           "200": {
             "description": "Successfully fetched APIs"
+          },
+          "500": {
+            "description": "Internal server error"
           }
         }
       },
@@ -54,12 +58,16 @@
             "description": "Successfully created new API"
           },
           "400": {
-            "description": "Invalid input"
+            "description": "Invalid input or missing data"
+          },
+          "500": {
+            "description": "Internal server error"
           }
         }
       }
     },
     "/apis/{id}": {
+      "tags": ["API Routes"],
       "get": {
         "description": "Get a single API by ID",
         "parameters": [
@@ -123,6 +131,9 @@
           "200": {
             "description": "Successfully updated API"
           },
+          "400": {
+            "description": "Invalid input or missing data"
+          },
           "404": {
             "description": "API not found"
           },
@@ -151,6 +162,159 @@
           },
           "500": {
             "description": "Failed to delete API"
+          }
+        }
+      }
+    },
+    "/users": {
+      "tags": ["User Routes"],
+      "get": {
+        "description": "Get all users",
+        "responses": {
+          "200": {
+            "description": "List of all users",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "array",
+                  "items": {
+                    "$ref": "#/components/schemas/User"
+                  }
+                }
+              }
+            }
+          },
+          "500": {
+            "description": "Internal server error"
+          }
+        }
+      },
+      "post": {
+        "description": "Create a new user",
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/User"
+              }
+            }
+          }
+        },
+        "responses": {
+          "201": {
+            "description": "User created successfully"
+          },
+          "400": {
+            "description": "Missing required fields"
+          },
+          "500": {
+            "description": "Internal server error"
+          }
+        }
+      }
+    },
+    "/users/{id}": {
+      "tags": ["User Routes"],
+      "get": {
+        "description": "Get user by ID",
+        "parameters": [
+          {
+            "name": "id",
+            "in": "path",
+            "description": "The user ID",
+            "required": true,
+            "type": "string"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "User details",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/User"
+                }
+              }
+            }
+          },
+          "404": {
+            "description": "User not found"
+          },
+          "500": {
+            "description": "Internal server error"
+          }
+        }
+      },
+      "put": {
+        "description": "Update a user by ID",
+        "parameters": [
+          {
+            "name": "id",
+            "in": "path",
+            "description": "The user ID",
+            "required": true,
+            "type": "string"
+          },
+          {
+            "name": "body",
+            "in": "body",
+            "required": true,
+            "schema": {
+              "$ref": "#/components/schemas/User"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "User updated successfully"
+          },
+          "400": {
+            "description": "Missing required fields"
+          },
+          "404": {
+            "description": "User not found"
+          },
+          "500": {
+            "description": "Internal server error"
+          }
+        }
+      },
+      "delete": {
+        "description": "Delete a user by ID",
+        "parameters": [
+          {
+            "name": "id",
+            "in": "path",
+            "description": "The user ID",
+            "required": true,
+            "type": "string"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "User successfully deleted"
+          },
+          "404": {
+            "description": "User not found"
+          },
+          "500": {
+            "description": "Internal server error"
+          }
+        }
+      }
+    }
+  },
+  "components": {
+    "schemas": {
+      "User": {
+        "type": "object",
+        "properties": {
+          "googleId": {
+            "type": "string"
+          },
+          "email": {
+            "type": "string"
           }
         }
       }
