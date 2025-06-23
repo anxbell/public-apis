@@ -32,18 +32,21 @@ View Swagger documentation: [https://publicapis.onrender.com/api-docs](https://p
 ---
 
 ## 📁 Project Structure
+
+## 📁 Project Structure
+```
+public-apis/
 ├── src/
-│ ├── controllers/ # Route logic
-│ ├── models/ # Mongoose schemas
-│ ├── routes/ # Express routes
-│ ├── middleware/ # Custom middleware
-│ ├── config/ # OAuth and DB configuration
-│ └── utils/ # Utility functions
-├── swagger/ # Swagger configuration
-├── .env.example # Sample environment variables
+│   ├── config/         # DB and auth config
+│   ├── controllers/    # Business logic
+│   ├── middleware/     # Custom middlewares
+│   ├── models/         # Mongoose schemas
+│   ├── routes/         # Express routers
+│   └── utils/          # Helper functions
+├── swagger/            # Swagger config and output     
 ├── package.json
 └── README.md
-
+```
 ---
 
 ## 🚀 Getting Started
@@ -67,13 +70,13 @@ Copy code
 npm run dev
 Visit: http://localhost:3000
 
-### Authentication
+### 🔐 Authentication
 OAuth via Google
 
 Session-based login
 
 Only authenticated users can add or comment on APIs
 
-### API Documentation
+### 📑 API Documentation
 Visit http://localhost:3000/api-docs after running the project to explore available routes and try them out using Swagger UI.
 
