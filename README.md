@@ -32,8 +32,6 @@ View Swagger documentation: [https://publicapis.onrender.com/api-docs](https://p
 ---
 
 ## 📁 Project Structure
-
-## 📁 Project Structure
 ```
 public-apis/
 ├── src/
@@ -65,11 +63,11 @@ cd public-apis
 npm install
 ```
 ### Running the App
-bash
+```bash
 Copy code
 npm run dev
 Visit: http://localhost:3000
-
+```
 ### 🔐 Authentication
 OAuth via Google
 
